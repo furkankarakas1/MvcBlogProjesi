@@ -1,0 +1,210 @@
+﻿@model List<project3.Models.urunler>
+@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    if(TempData["urun"] != null)
+    {
+        <script src="~/Content/admin/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script>
+            Swal.fire("bşarılı", " @TempData["urun"]", 'success');
+        </script>
+    }
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Ürünler Sayfası</h1>
+
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Ürünler</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- /.card -->
+
+                    <div class="card">
+                        <div class="card-header">
+                            @Html.ActionLink("Yeni Ürün Ekle", "Yeni", null, new { @class = "btn btn-primary mx-4" })
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Foto</th>
+                                        <th>Üst Başlık</th>
+                                        <th>Başlık</th>
+                                        <th>İçerik</th>
+                                        <th>Aktif</th>
+                                        <th>Sıra</th>
+                                        <th>Güncelle</th>
+                                        <th>Sil</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var urun in Model)
+                                    {
+                                        <tr>
+                                            <td><img src="~/Content/img/@urun.foto" alt="Alternate Text" width="150" /></td>
+                                            <td>
+                                                @urun.ustbaslik
+                                            </td>
+                                            <td>@urun.baslik</td>
+                                            <td>
+                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_@urun.id">
+                                                    İçerik
+                                                </button>
+                                                <div class="modal fade" id="modal_@urun.id">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">İçerik</h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @Html.Raw(urun.icerik)
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                @if (urun.aktif == true)
+                                                {
+                                                    <i class="fas fa-check"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fas fa-times"></i>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @urun.sira
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Güncelle", "Guncelle", new { urun.id }, new { @class = "btn btn-info mx-4" })
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sil_@urun.id">
+                                                    Sil
+                                                </button>
+                                                <div class="modal fade" id="sil_@urun.id">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Sil</h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h4>emin misin silmekte</h4>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Vazgeç</button>
+                                                                @Html.ActionLink("Sil", "Sil", new { urun.id }, new { @class = "btn btn-danger" })
+
+
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Foto</th>
+                                        <th>Üst Başlık</th>
+                                        <th>Başlık</th>
+                                        <th>İçerik</th>
+                                        <th>Aktif</th>
+                                        <th>Sıra</th>
+                                        <th>Güncelle</th>
+                                        <th>Sil</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section altTaraf{
+    <!-- DataTables  & Plugins -->
+    <script src="~/Content/admin/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/admin/plugins/jszip/jszip.min.js"></script>
+    <script src="~/Content/admin/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/Content/admin/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Content/admin/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/admin/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/admin/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+
+}
